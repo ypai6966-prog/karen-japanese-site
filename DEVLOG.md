@@ -5,6 +5,7 @@
 - 老師：凱倫 老師（頁面上以「凱倫 老師」呈現）
 - 風格：日系手帳感（方格紙底、膠帶、印章、手寫字體 LXGW WenKai TC，字體取自 Google Fonts，需網路）
 - 技術：純靜態，無框架、無建置步驟
+- 部署：Cloudflare Pages（2026/11 由 Vercel 搬遷，因 Vercel 免費方案不允許商業用途）
 
 ## 頁面結構
 開場四季動畫 → 導覽列 → 首頁（今日一句、跑馬燈）→ 五十音翻牌 → 老師介紹 → 程度測驗 → 課程 → FAQ → 諮詢表單 → 頁尾（含「重播開場動畫」）
@@ -21,7 +22,7 @@
 - 粉專連結
 
 ## 已知限制
-- 諮詢表單目前只會跳出感謝畫面，**不會真的寄出**。之後可改接 Formspree、Google Apps Script 或 Vercel Functions 來真正收件。
+- 諮詢表單目前只會跳出感謝畫面，**不會真的寄出**。之後可改接 Formspree、Google Apps Script 或 Cloudflare Pages Functions 來真正收件。
 - 手機版導覽列會換成兩行，之後改成「≡」漢堡選單。
 - LINE 內建瀏覽器可能讓動畫效能下降，建議用 Safari／Chrome 開。
 - 需要網路才會載入手寫字體，離線時退回系統字體。
