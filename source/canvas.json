@@ -1,0 +1,44 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 5600,
+      "is_interactive": true,
+      "title": "首頁・日系手帳版",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Intro.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "開場動畫元件（請從手帳版首頁播放）",
+      "w": 1440,
+      "x": 0,
+      "y": 5720
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-11-14T15:41:20Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "file": "Main.dc.html",
+    "view": "focused"
+  },
+  "notes": {},
+  "order": [
+    "Main.dc.html",
+    "Intro.dc.html"
+  ],
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Page 1"
+    }
+  ],
+  "title": "日文教學網頁｜日系手帳感範例"
+}

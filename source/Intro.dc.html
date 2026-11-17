@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<title>開場動畫・四季互動</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="{{rootCls}}" onPointerMove="{{onMove}}" onPointerDown="{{onDown}}" role="region" aria-label="開場動畫：日本四季" style="position: fixed; inset: 0; z-index: 100; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; font-family: 'Noto Sans TC', sans-serif; color: #3A3530; background-color: {{s.bg}}; transition: background-color .9s ease; cursor: {{cursor}}">
+
+<!-- 背景氛圍 -->
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<sc-if value="{{isSpring}}" hint-placeholder-val="{{ true }}">
+<div class="ix-scene" style="position: absolute; inset: 0">
+<span class="ix-p" style="left: 30.0%; animation-duration: 6.4s; animation-delay: -0.6s; --dx: -16px; --spin: 420deg; width: 12px; height: 8px; border-radius: 100% 0 100% 0; background: #F2B8B5"></span>
+<span class="ix-p" style="left: 67.0%; animation-duration: 8.7s; animation-delay: -8.1s; --dx: 1px; --spin: 420deg; width: 11px; height: 7px; border-radius: 100% 0 100% 0; background: #EFA9A8"></span>
+<span class="ix-p" style="left: 57.9%; animation-duration: 9.5s; animation-delay: -4.4s; --dx: 36px; --spin: 300deg; width: 11px; height: 7px; border-radius: 100% 0 100% 0; background: #F2B8B5"></span>
+<span class="ix-p" style="left: 55.1%; animation-duration: 7.8s; animation-delay: -3.7s; --dx: 129px; --spin: 420deg; width: 10px; height: 7px; border-radius: 100% 0 100% 0; background: #F7D0CC"></span>
+<span class="ix-p" style="left: 5.1%; animation-duration: 7.0s; animation-delay: -2.6s; --dx: 47px; --spin: 300deg; width: 11px; height: 7px; border-radius: 100% 0 100% 0; background: #F7D0CC"></span>
+<span class="ix-p" style="left: 6.8%; animation-duration: 7.4s; animation-delay: -8.1s; --dx: -22px; --spin: 420deg; width: 10px; height: 7px; border-radius: 100% 0 100% 0; background: #F7D0CC"></span>
+<span class="ix-p" style="left: 13.7%; animation-duration: 8.6s; animation-delay: -8.2s; --dx: 62px; --spin: 240deg; width: 11px; height: 7px; border-radius: 100% 0 100% 0; background: #F7D0CC"></span>
+<span class="ix-p" style="left: 77.9%; animation-duration: 9.5s; animation-delay: -5.4s; --dx: 49px; --spin: 420deg; width: 14px; height: 10px; border-radius: 100% 0 100% 0; background: #F7D0CC"></span>
+<span class="ix-p" style="left: 30.2%; animation-duration: 8.1s; animation-delay: -2.5s; --dx: 136px; --spin: 240deg; width: 13px; height: 9px; border-radius: 100% 0 100% 0; background: #EFA9A8"></span>
+<span class="ix-p" style="left: 12.3%; animation-duration: 8.9s; animation-delay: -2.4s; --dx: 23px; --spin: 300deg; width: 16px; height: 11px; border-radius: 100% 0 100% 0; background: #EFA9A8"></span>
+<span class="ix-p" style="left: 41.3%; animation-duration: 8.7s; animation-delay: -6.8s; --dx: -25px; --spin: 300deg; width: 11px; height: 7px; border-radius: 100% 0 100% 0; background: #F2B8B5"></span>
+<span class="ix-p" style="left: 38.9%; animation-duration: 6.7s; animation-delay: -5.8s; --dx: -24px; --spin: 240deg; width: 16px; height: 11px; border-radius: 100% 0 100% 0; background: #F2B8B5"></span>
+</div>
+</sc-if>
+<sc-if value="{{isSummer}}" hint-placeholder-val="{{ false }}">
+<div class="ix-scene" style="position: absolute; inset: 0">
+<span style="position: absolute; left: 17.8%; top: 35.4%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.62"></span>
+<span style="position: absolute; left: 48.0%; top: 13.2%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.7"></span>
+<span style="position: absolute; left: 79.6%; top: 27.1%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.55"></span>
+<span style="position: absolute; left: 24.7%; top: 3.1%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.49"></span>
+<span style="position: absolute; left: 58.2%; top: 6.3%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.7"></span>
+<span style="position: absolute; left: 24.3%; top: 13.9%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.32"></span>
+<span style="position: absolute; left: 97.8%; top: 37.7%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.74"></span>
+<span style="position: absolute; left: 61.1%; top: 4.6%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.46"></span>
+<span style="position: absolute; left: 49.8%; top: 8.4%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.78"></span>
+<span style="position: absolute; left: 37.4%; top: 10.3%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.71"></span>
+<span style="position: absolute; left: 14.0%; top: 46.6%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.53"></span>
+<span style="position: absolute; left: 55.0%; top: 19.1%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.54"></span>
+<span style="position: absolute; left: 19.9%; top: 4.7%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.73"></span>
+<span style="position: absolute; left: 24.5%; top: 39.7%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.4"></span>
+<span style="position: absolute; left: 95.0%; top: 45.0%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.68"></span>
+<span style="position: absolute; left: 75.2%; top: 30.3%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.66"></span>
+<span style="position: absolute; left: 13.8%; top: 25.4%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.71"></span>
+<span style="position: absolute; left: 21.3%; top: 46.4%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.74"></span>
+<span style="position: absolute; left: 41.3%; top: 20.2%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.53"></span>
+<span style="position: absolute; left: 39.0%; top: 49.8%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.49"></span>
+<span style="position: absolute; left: 4.6%; top: 7.4%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.66"></span>
+<span style="position: absolute; left: 97.3%; top: 26.3%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.55"></span>
+<span style="position: absolute; left: 54.8%; top: 38.2%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.41"></span>
+<span style="position: absolute; left: 60.5%; top: 29.2%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.61"></span>
+<span style="position: absolute; left: 19.3%; top: 11.0%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.47"></span>
+<span style="position: absolute; left: 91.0%; top: 19.3%; width: 3px; height: 3px; border-radius: 50%; background: #FBF6EC; opacity: 0.6"></span>
+<sc-if value="{{ambFw}}" hint-placeholder-val="{{ true }}">
+<div class="ix-amb-fw" style="left: 14%; top: 26%; animation-delay: 0s">
+<span class="ix-amb-ray" style="--a: 0deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 30deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 60deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 90deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 120deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 150deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 180deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 210deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 240deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 270deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 300deg; background: #F2C4C0"></span>
+<span class="ix-amb-ray" style="--a: 330deg; background: #F2C4C0"></span>
+</div>
+<div class="ix-amb-fw" style="left: 84%; top: 34%; animation-delay: 1.6s">
+<span class="ix-amb-ray" style="--a: 0deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 30deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 60deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 90deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 120deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 150deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 180deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 210deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 240deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 270deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 300deg; background: #B9D4E0"></span>
+<span class="ix-amb-ray" style="--a: 330deg; background: #B9D4E0"></span>
+</div>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{isAutumn}}" hint-placeholder-val="{{ false }}">
+<div class="ix-scene" style="position: absolute; inset: 0">
+<svg class="ix-p" style="left: 64.2%; animation-duration: 6.5s; animation-delay: -4.8s; --dx: 23px; --spin: 420deg" width="25" height="25" viewBox="0 0 24 24"><path fill="#D98A3A" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 60.9%; animation-duration: 6.7s; animation-delay: -7.7s; --dx: -9px; --spin: 240deg" width="27" height="27" viewBox="0 0 24 24"><path fill="#C8553D" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 77.5%; animation-duration: 6.0s; animation-delay: -4.2s; --dx: -44px; --spin: 420deg" width="27" height="27" viewBox="0 0 24 24"><path fill="#D98A3A" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 83.7%; animation-duration: 6.9s; animation-delay: -8.7s; --dx: 94px; --spin: 360deg" width="18" height="18" viewBox="0 0 24 24"><path fill="#D98A3A" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 38.1%; animation-duration: 7.2s; animation-delay: -8.1s; --dx: 15px; --spin: 420deg" width="27" height="27" viewBox="0 0 24 24"><path fill="#C8553D" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 53.5%; animation-duration: 6.2s; animation-delay: -5.4s; --dx: 22px; --spin: 360deg" width="22" height="22" viewBox="0 0 24 24"><path fill="#D98A3A" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 6.2%; animation-duration: 9.3s; animation-delay: -8.8s; --dx: 30px; --spin: 240deg" width="23" height="23" viewBox="0 0 24 24"><path fill="#E0A33C" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 10.5%; animation-duration: 6.3s; animation-delay: -0.7s; --dx: 134px; --spin: 420deg" width="26" height="26" viewBox="0 0 24 24"><path fill="#C8553D" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 66.6%; animation-duration: 8.8s; animation-delay: -4.2s; --dx: 71px; --spin: 420deg" width="24" height="24" viewBox="0 0 24 24"><path fill="#C8553D" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+<svg class="ix-p" style="left: 22.1%; animation-duration: 6.2s; animation-delay: -3.9s; --dx: 3px; --spin: 360deg" width="27" height="27" viewBox="0 0 24 24"><path fill="#E0A33C" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg>
+</div>
+</sc-if>
+<sc-if value="{{isWinter}}" hint-placeholder-val="{{ false }}">
+<div class="ix-scene" style="position: absolute; inset: 0">
+<span class="ix-p" style="left: 70.9%; animation-duration: 9.1s; animation-delay: -2.1s; --dx: 19px; --spin: 0deg; width: 6px; height: 6px; border-radius: 50%; background: #FFFFFF; opacity: 0.92"></span>
+<span class="ix-p" style="left: 64.1%; animation-duration: 10.2s; animation-delay: -1.6s; --dx: 17px; --spin: 0deg; width: 9px; height: 9px; border-radius: 50%; background: #FFFFFF; opacity: 0.8"></span>
+<span class="ix-p" style="left: 60.7%; animation-duration: 10.4s; animation-delay: -5.5s; --dx: 57px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.75"></span>
+<span class="ix-p" style="left: 30.0%; animation-duration: 9.6s; animation-delay: -4.7s; --dx: 61px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.67"></span>
+<span class="ix-p" style="left: 38.3%; animation-duration: 12.7s; animation-delay: -5.0s; --dx: -20px; --spin: 0deg; width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF; opacity: 0.85"></span>
+<span class="ix-p" style="left: 45.3%; animation-duration: 11.4s; animation-delay: -8.6s; --dx: 60px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.7"></span>
+<span class="ix-p" style="left: 57.0%; animation-duration: 9.3s; animation-delay: -0.7s; --dx: -27px; --spin: 0deg; width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF; opacity: 0.89"></span>
+<span class="ix-p" style="left: 15.0%; animation-duration: 9.9s; animation-delay: -1.8s; --dx: 46px; --spin: 0deg; width: 8px; height: 8px; border-radius: 50%; background: #FFFFFF; opacity: 0.93"></span>
+<span class="ix-p" style="left: 45.8%; animation-duration: 9.9s; animation-delay: -5.6s; --dx: 5px; --spin: 0deg; width: 8px; height: 8px; border-radius: 50%; background: #FFFFFF; opacity: 0.66"></span>
+<span class="ix-p" style="left: 18.5%; animation-duration: 8.4s; animation-delay: -0.3s; --dx: 50px; --spin: 0deg; width: 3px; height: 3px; border-radius: 50%; background: #FFFFFF; opacity: 0.78"></span>
+<span class="ix-p" style="left: 39.0%; animation-duration: 12.9s; animation-delay: -4.0s; --dx: -30px; --spin: 0deg; width: 3px; height: 3px; border-radius: 50%; background: #FFFFFF; opacity: 0.63"></span>
+<span class="ix-p" style="left: 36.3%; animation-duration: 12.2s; animation-delay: -1.5s; --dx: 43px; --spin: 0deg; width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF; opacity: 0.67"></span>
+<span class="ix-p" style="left: 40.9%; animation-duration: 8.1s; animation-delay: -2.2s; --dx: 43px; --spin: 0deg; width: 9px; height: 9px; border-radius: 50%; background: #FFFFFF; opacity: 0.78"></span>
+<span class="ix-p" style="left: 7.9%; animation-duration: 8.3s; animation-delay: -6.7s; --dx: 67px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.88"></span>
+<span class="ix-p" style="left: 59.4%; animation-duration: 9.3s; animation-delay: -4.2s; --dx: 56px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.69"></span>
+<span class="ix-p" style="left: 29.2%; animation-duration: 10.6s; animation-delay: -8.0s; --dx: -21px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.82"></span>
+<span class="ix-p" style="left: 18.6%; animation-duration: 11.4s; animation-delay: -0.5s; --dx: -26px; --spin: 0deg; width: 5px; height: 5px; border-radius: 50%; background: #FFFFFF; opacity: 0.81"></span>
+<span class="ix-p" style="left: 15.5%; animation-duration: 9.0s; animation-delay: -8.4s; --dx: 38px; --spin: 0deg; width: 6px; height: 6px; border-radius: 50%; background: #FFFFFF; opacity: 0.63"></span>
+<span class="ix-p" style="left: 93.5%; animation-duration: 8.2s; animation-delay: -2.9s; --dx: -2px; --spin: 0deg; width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF; opacity: 0.69"></span>
+<span class="ix-p" style="left: 52.2%; animation-duration: 10.4s; animation-delay: -1.6s; --dx: 60px; --spin: 0deg; width: 6px; height: 6px; border-radius: 50%; background: #FFFFFF; opacity: 0.9"></span>
+<span class="ix-p" style="left: 43.3%; animation-duration: 11.9s; animation-delay: -2.5s; --dx: -23px; --spin: 0deg; width: 8px; height: 8px; border-radius: 50%; background: #FFFFFF; opacity: 0.91"></span>
+<span class="ix-p" style="left: 52.3%; animation-duration: 12.7s; animation-delay: -8.7s; --dx: 19px; --spin: 0deg; width: 6px; height: 6px; border-radius: 50%; background: #FFFFFF; opacity: 0.87"></span>
+<span class="ix-p" style="left: 1.1%; animation-duration: 9.9s; animation-delay: -5.5s; --dx: 47px; --spin: 0deg; width: 9px; height: 9px; border-radius: 50%; background: #FFFFFF; opacity: 0.85"></span>
+<span class="ix-p" style="left: 17.9%; animation-duration: 13.0s; animation-delay: -4.5s; --dx: 22px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.77"></span>
+<span class="ix-p" style="left: 76.0%; animation-duration: 10.0s; animation-delay: -7.9s; --dx: 16px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.62"></span>
+<span class="ix-p" style="left: 52.9%; animation-duration: 12.8s; animation-delay: -3.3s; --dx: -14px; --spin: 0deg; width: 6px; height: 6px; border-radius: 50%; background: #FFFFFF; opacity: 0.85"></span>
+<span class="ix-p" style="left: 96.5%; animation-duration: 9.5s; animation-delay: -6.7s; --dx: -3px; --spin: 0deg; width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF; opacity: 0.61"></span>
+<span class="ix-p" style="left: 64.9%; animation-duration: 9.1s; animation-delay: -4.2s; --dx: 33px; --spin: 0deg; width: 8px; height: 8px; border-radius: 50%; background: #FFFFFF; opacity: 0.62"></span>
+<span class="ix-p" style="left: 81.1%; animation-duration: 8.2s; animation-delay: -4.3s; --dx: -25px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.88"></span>
+<span class="ix-p" style="left: 57.5%; animation-duration: 9.9s; animation-delay: -6.6s; --dx: 63px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.71"></span>
+<span class="ix-p" style="left: 0.4%; animation-duration: 10.4s; animation-delay: -5.2s; --dx: 43px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.9"></span>
+<span class="ix-p" style="left: 54.2%; animation-duration: 8.7s; animation-delay: -6.1s; --dx: -27px; --spin: 0deg; width: 9px; height: 9px; border-radius: 50%; background: #FFFFFF; opacity: 0.68"></span>
+<span class="ix-p" style="left: 34.7%; animation-duration: 9.3s; animation-delay: -4.0s; --dx: 61px; --spin: 0deg; width: 9px; height: 9px; border-radius: 50%; background: #FFFFFF; opacity: 0.59"></span>
+<span class="ix-p" style="left: 64.3%; animation-duration: 12.2s; animation-delay: -4.1s; --dx: -15px; --spin: 0deg; width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF; opacity: 0.91"></span>
+<span class="ix-p" style="left: 7.6%; animation-duration: 11.4s; animation-delay: -5.7s; --dx: -12px; --spin: 0deg; width: 3px; height: 3px; border-radius: 50%; background: #FFFFFF; opacity: 0.67"></span>
+<span class="ix-p" style="left: 21.4%; animation-duration: 8.2s; animation-delay: -4.5s; --dx: 61px; --spin: 0deg; width: 4px; height: 4px; border-radius: 50%; background: #FFFFFF; opacity: 0.91"></span>
+<span class="ix-p" style="left: 90.3%; animation-duration: 9.3s; animation-delay: -0.1s; --dx: -12px; --spin: 0deg; width: 3px; height: 3px; border-radius: 50%; background: #FFFFFF; opacity: 0.88"></span>
+<span class="ix-p" style="left: 5.9%; animation-duration: 9.2s; animation-delay: -5.4s; --dx: 35px; --spin: 0deg; width: 8px; height: 8px; border-radius: 50%; background: #FFFFFF; opacity: 0.83"></span>
+<span class="ix-p" style="left: 47.8%; animation-duration: 12.8s; animation-delay: -4.9s; --dx: 25px; --spin: 0deg; width: 8px; height: 8px; border-radius: 50%; background: #FFFFFF; opacity: 0.61"></span>
+<span class="ix-p" style="left: 39.4%; animation-duration: 11.9s; animation-delay: -5.8s; --dx: 62px; --spin: 0deg; width: 6px; height: 6px; border-radius: 50%; background: #FFFFFF; opacity: 0.56"></span>
+</div>
+</sc-if>
+
+<svg style="position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 34vh" viewBox="0 0 1440 360" preserveAspectRatio="xMidYMax slice">
+<path style="fill: {{s.fuji}}; transition: fill .9s ease" d="M0 360 L0 330 C220 320 380 300 520 230 L640 120 C690 88 750 88 800 120 L920 230 C1060 300 1220 320 1440 330 L1440 360 Z"></path>
+<path fill="#FFFFFF" d="M640 120 C690 88 750 88 800 120 L842 158 L812 150 L790 168 L760 148 L730 170 L702 150 L676 166 L652 150 L598 158 Z"></path>
+</svg>
+
+<!-- 冬：起霧的窗 -->
+<sc-if value="{{isWinter}}" hint-placeholder-val="{{ false }}">
+<div class="ix-scene" style="position: absolute; inset: 0">
+<sc-for list="{{fog}}" as="c" hint-placeholder-count="0">
+<span style="{{c.style}}"></span>
+</sc-for>
+</div>
+</sc-if>
+</div>
+
+<!-- 季節標題 -->
+<sc-if value="{{showSeasonText}}" hint-placeholder-val="{{ true }}">
+<div aria-live="polite" class="{{textCls}}" style="position: absolute; left: 0; right: 0; top: 9vh; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 0 24px; pointer-events: none">
+<span lang="ja" style="font-family: 'LXGW WenKai TC', serif; font-weight: 700; line-height: 1; font-size: clamp(96px, 15vw, 180px); color: {{s.kc}}">{{s.k}}</span>
+<span lang="ja" style="font-family: 'LXGW WenKai TC', serif; font-size: 24px; letter-spacing: 0.3em; color: {{s.tc}}">{{s.kana}}</span>
+<span style="font-size: 16px; color: {{s.tc}}">{{s.zh}}</span>
+</div>
+</sc-if>
+
+<!-- 名稱貼紙（四季播放時一直在左上角） -->
+<sc-if value="{{showSeasonText}}" hint-placeholder-val="{{ true }}">
+<div class="ix-scene" style="position: absolute; top: 20px; left: 24px; display: flex; align-items: center; gap: 10px; background: rgba(255,253,248,0.94); padding: 6px 18px 6px 6px; border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.10); transform: rotate(-2deg); pointer-events: none">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid {{accent}}; color: {{accent}}; display: flex; align-items: center; justify-content: center; font-family: 'LXGW WenKai TC', serif; font-weight: 700; font-size: 16px">日</span>
+<span style="font-family: 'LXGW WenKai TC', serif; font-weight: 700; font-size: 17px; color: #3A3530">凱倫的日語記事簿</span>
+</div>
+</sc-if>
+
+<!-- 收尾 -->
+<sc-if value="{{isFinal}}" hint-placeholder-val="{{ false }}">
+<div class="ix-scene" style="position: absolute; left: 0; right: 0; top: 14vh; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 0 24px; pointer-events: none">
+<span aria-hidden="true" class="ix-stamp" style="--r: -8deg; animation-delay: 1.7s; width: 88px; height: 88px; border-radius: 50%; border: 3px solid {{accent}}; color: {{accent}}; display: flex; align-items: center; justify-content: center; font-family: 'LXGW WenKai TC', serif; font-weight: 700; font-size: 44px">日</span>
+<span style="font-family: 'LXGW WenKai TC', serif; font-weight: 700; font-size: clamp(36px, 6vw, 56px); line-height: 1.2; color: #3A3530; letter-spacing: 0.04em"><span class="ix-write" style="animation-delay: 0.15s">凱</span><span class="ix-write" style="animation-delay: 0.29s">倫</span><span class="ix-write" style="animation-delay: 0.43s">的</span><span class="ix-write" style="animation-delay: 0.57s">日</span><span class="ix-write" style="animation-delay: 0.71s">語</span><span class="ix-write" style="animation-delay: 0.85s">記</span><span class="ix-write" style="animation-delay: 0.99s">事</span><span class="ix-write" style="animation-delay: 1.13s">簿</span></span>
+<svg aria-hidden="true" width="380" height="20" viewBox="0 0 380 20" style="max-width: 80vw; margin-top: -6px"><path class="ix-underline" pathLength="100" d="M8 13 C 100 4, 220 18, 372 8" fill="none" stroke="{{accent}}" stroke-width="4" stroke-linecap="round"></path></svg>
+<span lang="ja" class="ix-late" style="font-family: 'LXGW WenKai TC', serif; font-size: 22px; letter-spacing: 0.12em; color: #3A3530">日本語の手帳、ひらこう。</span>
+<span class="ix-late" style="font-size: 16px; color: #5E564E">一起翻開這本日文手帳吧</span>
+</div>
+</sc-if>
+
+<!-- 互動特效（固定座位，不會互相搶位子） -->
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<sc-for list="{{blooms}}" as="f" hint-placeholder-count="0">
+<div class="{{f.cls}}" style="{{f.style}}"><svg width="100%" height="100%" viewBox="-12 -12 24 24" style="display: block; overflow: visible"><g fill="{{f.color}}"><ellipse cx="0" cy="-6" rx="4" ry="6"></ellipse><ellipse cx="0" cy="-6" rx="4" ry="6" transform="rotate(72)"></ellipse><ellipse cx="0" cy="-6" rx="4" ry="6" transform="rotate(144)"></ellipse><ellipse cx="0" cy="-6" rx="4" ry="6" transform="rotate(216)"></ellipse><ellipse cx="0" cy="-6" rx="4" ry="6" transform="rotate(288)"></ellipse></g><circle r="2.6" fill="#F3C969"></circle></svg></div>
+</sc-for>
+<sc-for list="{{leaves}}" as="f" hint-placeholder-count="0">
+<div class="{{f.cls}}" style="{{f.style}}"><svg width="100%" height="100%" viewBox="0 0 24 24" style="display: block"><path fill="{{f.color}}" d="M12 2l1.8 4.6 3.7-1.6-1 4.2 4.5.6-3.4 3 2.6 1.6-4.6 1-.6 3.6-3-2.4V22h-.8v-5.4l-3 2.4-.6-3.6-4.6-1 2.6-1.6-3.4-3 4.5-.6-1-4.2 3.7 1.6z"></path></svg></div>
+</sc-for>
+<sc-for list="{{sparks}}" as="f" hint-placeholder-count="0">
+<div class="{{f.cls}}" style="{{f.style}}"><span style="display: block; width: 100%; height: 100%; border-radius: 50%; background: {{f.color}}; box-shadow: 0 0 10px {{f.color}}"></span></div>
+</sc-for>
+<sc-for list="{{fireworks}}" as="f" hint-placeholder-count="0">
+<div class="{{f.cls}}" style="{{f.style}}">
+<sc-for list="{{f.rays}}" as="r" hint-placeholder-count="0">
+<span class="{{r.cls}}" style="{{r.style}}"></span>
+</sc-for>
+<span class="{{f.coreCls}}" style="background: {{f.color}}; box-shadow: 0 0 24px {{f.color}}"></span>
+</div>
+</sc-for>
+</div>
+
+<!-- 玩法提示 -->
+<sc-if value="{{showHint}}" hint-placeholder-val="{{ true }}">
+<div role="status" class="{{hintCls}}" style="position: absolute; left: 50%; bottom: 108px; transform: translateX(-50%); max-width: calc(100vw - 48px); box-sizing: border-box; display: flex; align-items: center; gap: 12px; background: rgba(255,253,248,0.94); border: 1.5px solid #3A3530; border-radius: 999px; padding: 10px 22px 10px 14px; box-shadow: 0 8px 20px rgba(0,0,0,0.12); pointer-events: none">
+<span aria-hidden="true" style="position: relative; width: 28px; height: 28px; flex: none; display: flex; align-items: center; justify-content: center">
+<span class="ix-ripple" style="position: absolute; inset: 0; border-radius: 50%; border: 2px solid {{accent}}"></span>
+<sc-if value="{{coarse}}" hint-placeholder-val="{{ false }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A3530" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a2 2 0 0 1 4 0v6"></path><path d="M13 10.5a2 2 0 0 1 4 0V12a2 2 0 0 1 3 1.7V16a6 6 0 0 1-6 6h-1.5a6 6 0 0 1-4.9-2.5L4.6 15a1.8 1.8 0 0 1 2.8-2.2L9 14.5"></path></svg>
+</sc-if>
+<sc-if value="{{fine}}" hint-placeholder-val="{{ true }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A3530" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 7-6 2-2 6z"></path></svg>
+</sc-if>
+</span>
+<span style="font-family: 'LXGW WenKai TC', serif; font-size: 17px; line-height: 1.4">{{hint}}</span>
+</div>
+</sc-if>
+
+<!-- 控制列 -->
+<div style="position: absolute; left: 0; right: 0; bottom: 24px; padding: 0 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<div role="group" aria-label="選擇季節" style="display: flex; gap: 8px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<button type="button" class="ix-btn" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" aria-label="{{t.label}}" style="{{t.style}}">{{t.k}}</button>
+</sc-for>
+</div>
+<div style="display: flex; gap: 10px; margin-left: auto">
+<button type="button" class="ix-btn" onClick="{{next}}" style="min-height: 44px; padding: 8px 22px; border-radius: 999px; border: none; background: {{accent}}; color: #FFFFFF; font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px">{{nextLabel}}<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"></path></svg></button>
+<button type="button" class="ix-btn" onClick="{{skip}}" style="min-height: 44px; padding: 8px 20px; border-radius: 999px; border: 1.5px solid #3A3530; background: rgba(255,253,248,0.92); color: #3A3530; font-size: 15px; cursor: pointer">略過</button>
+</div>
+</div>
+
+<div aria-hidden="true" style="position: absolute; left: 0; bottom: 0; height: 5px; width: {{progress}}; background: {{accent}}; transition: width .6s ease"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4472F"},"seconds":{"editor":"int","default":4,"min":2,"max":10},"onDone":{"editor":null},"$preview":{"width":1440,"height":900}}'>
+var SEASONS = [
+  { k: '春', kana: 'はる・さくら', zh: '櫻花盛開，最適合開始新的學習', bg: '#F6DCDC', fuji: '#9AA7BD', kc: '#B4472F', tc: '#3A3530', label: '春天' },
+  { k: '夏', kana: 'なつ・はなび', zh: '夏夜的煙火大會，浴衣與祭典', bg: '#23304A', fuji: '#141C2D', kc: '#FCEBB6', tc: '#FBF6EC', label: '夏天' },
+  { k: '秋', kana: 'あき・もみじ', zh: '楓紅滿山，散步賞楓的好時節', bg: '#F3D9B8', fuji: '#8A6F7E', kc: '#8E3522', tc: '#3A3530', label: '秋天' },
+  { k: '冬', kana: 'ふゆ・ゆき', zh: '白雪覆蓋富士山，泡湯的季節', bg: '#4A5D70', fuji: '#EEF2F5', kc: '#FFFFFF', tc: '#FBF6EC', label: '冬天' },
+  { k: '', kana: '', zh: '', bg: '#FBF6EC', fuji: '#E3D8C3', kc: '#3A3530', tc: '#3A3530', label: '結尾' }
+];
+var HINTS = [
+  { fine: '移動滑鼠，在畫面上畫出櫻花', coarse: '用手指在畫面上滑動，畫出櫻花', done: '好漂亮！繼續畫，或前往下一季' },
+  { fine: '點一下畫面任何地方，放一發煙火！', coarse: '點一下畫面任何地方，放一發煙火！', done: '砰！再多放幾發吧' },
+  { fine: '滑鼠滑過落葉，把楓葉撥開', coarse: '用手指滑過落葉，把楓葉撥開', done: '沙沙沙～這就是秋天的聲音' },
+  { fine: '窗戶起霧了，用滑鼠擦一擦', coarse: '窗戶起霧了，用手指擦一擦', done: '再擦一下，就看得見富士山了' }
+];
+var COLS = 12, ROWS = 7;
+var BLOOM = ['#F2B8B5', '#F7D0CC', '#EFA9A8', '#FFFFFF'];
+var FW = ['#F2C4C0', '#FCEBB6', '#B9D4E0', '#F6A6A0', '#FFFFFF'];
+var LEAF = ['#C8553D', '#D98A3A', '#B4472F', '#E0A33C'];
+var FOG_FULL = [];
+for (var i = 0; i < COLS * ROWS; i++) { FOG_FULL.push(false); }
+
+var RAYS = 14;
+function makePool(n, withRays) {
+  var a = [];
+  for (var i = 0; i < n; i++) {
+    var rays = [];
+    if (withRays) { for (var j = 0; j < RAYS; j++) { rays.push({ style: '' }); } }
+    a.push({ gen: 0, kind: '', x: 0, y: 0, size: 0, color: '#FFFFFF', r: 0, dx: 0, dy: 0, spin: 0, rays: rays });
+  }
+  return a;
+}
+function par(g) { return g % 2 ? 'ix-a' : 'ix-b'; }
+function rnd(a, b) { return a + Math.random() * (b - a); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var coarse = false;
+    try { coarse = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches); } catch (e) {}
+    this.pools = { bloom: makePool(36, false), leaf: makePool(40, false), spark: makePool(24, false), fw: makePool(6, true) };
+    this.ptr = { bloom: 0, leaf: 0, spark: 0, fw: 0 };
+    this.downAt = 0;
+    this.state = { season: 0, pools: this.pools, fog: FOG_FULL.slice(), leaving: false, played: [false, false, false, false], coarse: coarse };
+    this.last = { x: -999, y: -999, t: 0 };
+  }
+  componentDidMount() { this.startTimer(); }
+  componentWillUnmount() {
+    clearTimeout(this.t); clearTimeout(this.leaveT);
+  }
+  secs() { return (this.props.seconds ?? 4) * 1000; }
+  startTimer(ms) {
+    var self = this;
+    clearTimeout(this.t);
+    var dur = ms || (this.state.season < 4 ? this.secs() : 4000);
+    this.deadline = Date.now() + dur;
+    this.t = setTimeout(function () { self.next(); }, dur);
+  }
+  bump() {
+    if (this.state.season < 4 && this.deadline - Date.now() < 2500) { this.startTimer(2500); }
+  }
+  goTo(i) {
+    var patch = { season: i };
+    if (i === 3) { patch.fog = FOG_FULL.slice(); }
+    this.setState(patch);
+    this.startTimer(i < 4 ? this.secs() : 4000);
+  }
+  next() {
+    if (this.state.season >= 4) { this.leave(); return; }
+    this.goTo(this.state.season + 1);
+  }
+  leave() {
+    var self = this;
+    if (this.state.leaving) { return; }
+    clearTimeout(this.t);
+    this.setState({ leaving: true });
+    this.leaveT = setTimeout(function () {
+      if (typeof self.props.onDone === 'function') { self.props.onDone(); }
+      else { self.setState({ leaving: false, season: 0, fog: FOG_FULL.slice() }); self.startTimer(self.secs()); }
+    }, 850);
+  }
+  markPlayed() {
+    var s = this.state.season;
+    if (s < 4 && !this.state.played[s]) {
+      var p = this.state.played.slice(); p[s] = true;
+      this.setState({ played: p });
+    }
+    this.bump();
+  }
+  put(kind, items) {
+    var pool = this.pools[kind].slice();
+    for (var i = 0; i < items.length; i++) {
+      var slot = this.ptr[kind] % pool.length;
+      this.ptr[kind] += 1;
+      pool[slot] = Object.assign({}, items[i], { gen: pool[slot].gen + 1 });
+    }
+    var next = Object.assign({}, this.pools);
+    next[kind] = pool;
+    this.pools = next;
+    this.setState({ pools: next });
+  }
+  item(kind, x, y, size, extra) {
+    return Object.assign({ kind: kind, x: x, y: y, size: size }, extra || {});
+  }
+  spawnBloom(x, y, n) {
+    var arr = [];
+    for (var i = 0; i < n; i++) {
+      arr.push(this.item('bloom', x + rnd(-14, 14), y + rnd(-14, 14), rnd(22, 40), { color: pick(BLOOM), r: rnd(0, 72), dx: rnd(-40, 40), dy: rnd(60, 140) }));
+    }
+    this.put('bloom', arr);
+  }
+  spawnFirework(x, y) {
+    var color = pick(FW);
+    var rays = [];
+    var count = RAYS;
+    for (var i = 0; i < count; i++) {
+      var c = i % 3 === 0 ? pick(FW) : color;
+      rays.push({ style: '--a: ' + (i * 360 / count) + 'deg; --dist: ' + Math.round(rnd(70, 110)) + 'px; background: ' + c + '; height: ' + Math.round(rnd(18, 30)) + 'px' });
+    }
+    this.put('fw', [this.item('fw', x, y, 0, { color: color, rays: rays })]);
+  }
+  spawnSpark(x, y) {
+    this.put('spark', [this.item('spark', x, y, rnd(5, 9), { color: pick(['#FCEBB6', '#FFF6C9', '#F2C4C0']), dx: rnd(-30, 30), dy: rnd(-50, -10) })]);
+  }
+  spawnLeaves(x, y, n) {
+    var arr = [];
+    for (var i = 0; i < n; i++) {
+      var ang = rnd(0, Math.PI * 2), dist = rnd(60, 160);
+      arr.push(this.item('leaf', x + rnd(-10, 10), y + rnd(-10, 10), rnd(20, 32), { color: pick(LEAF), dx: Math.cos(ang) * dist, dy: Math.sin(ang) * dist + 40, spin: rnd(-540, 540) }));
+    }
+    this.put('leaf', arr);
+  }
+  wipe(x, y, w, h) {
+    var cw = w / COLS, ch = h / ROWS;
+    var fog = this.state.fog.slice();
+    var changed = false;
+    var col = Math.floor(x / cw), row = Math.floor(y / ch);
+    for (var r = row - 1; r <= row + 1; r++) {
+      for (var c = col - 1; c <= col + 1; c++) {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS) { continue; }
+        var cx = (c + 0.5) * cw, cy = (r + 0.5) * ch;
+        var d = Math.sqrt((cx - x) * (cx - x) + (cy - y) * (cy - y));
+        if (d < Math.max(cw, ch) * 0.95 && !fog[r * COLS + c]) { fog[r * COLS + c] = true; changed = true; }
+      }
+    }
+    if (changed) { this.setState({ fog: fog }); }
+  }
+  pos(e) {
+    var el = e.currentTarget;
+    var rect = el.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top, w: rect.width, h: rect.height };
+  }
+  isControl(e) {
+    var t = e.target;
+    return !!(t && t.closest && t.closest('button'));
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state;
+    var accent = this.props.accent ?? '#B4472F';
+    var s = SEASONS[st.season];
+    var coarse = st.coarse;
+
+    var tabs = SEASONS.slice(0, 4).map(function (se, i) {
+      var on = st.season === i;
+      return {
+        k: se.k, label: '切換到' + se.label, pressed: on ? 'true' : 'false',
+        pick: function () { self.goTo(i); },
+        style: 'width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-family: \'LXGW WenKai TC\', serif; font-weight: 700; font-size: 18px; padding: 0; border: 2px solid ' + (on ? accent : '#3A3530') + '; background: ' + (on ? accent : 'rgba(255,253,248,0.92)') + '; color: ' + (on ? '#FFFFFF' : '#3A3530')
+      };
+    });
+
+    function base(f) {
+      return 'position: absolute; left: ' + Math.round(f.x) + 'px; top: ' + Math.round(f.y) + 'px; width: ' + Math.round(f.size) + 'px; height: ' + Math.round(f.size) + 'px; margin-left: ' + Math.round(-f.size / 2) + 'px; margin-top: ' + Math.round(-f.size / 2) + 'px';
+    }
+    var P = st.pools;
+    var blooms = P.bloom.map(function (f) {
+      return { color: f.color, cls: f.gen ? 'ix-bloom ' + par(f.gen) : 'ix-off', style: base(f) + '; --r: ' + Math.round(f.r) + 'deg; --dx: ' + Math.round(f.dx) + 'px; --dy: ' + Math.round(f.dy) + 'px' };
+    });
+    var leaves = P.leaf.map(function (f) {
+      return { color: f.color, cls: f.gen ? 'ix-leaf ' + par(f.gen) : 'ix-off', style: base(f) + '; --dx: ' + Math.round(f.dx) + 'px; --dy: ' + Math.round(f.dy) + 'px; --spin: ' + Math.round(f.spin) + 'deg' };
+    });
+    var sparks = P.spark.map(function (f) {
+      return { color: f.color, cls: f.gen ? 'ix-spark ' + par(f.gen) : 'ix-off', style: base(f) + '; --dx: ' + Math.round(f.dx) + 'px; --dy: ' + Math.round(f.dy) + 'px' };
+    });
+    var fireworks = P.fw.map(function (f) {
+      var on = f.gen > 0;
+      return {
+        color: f.color,
+        cls: on ? 'ix-fw ' + par(f.gen) : 'ix-off',
+        coreCls: on ? 'ix-core ' + par(f.gen) : 'ix-off',
+        style: base(f),
+        rays: f.rays.map(function (r) { return { style: r.style, cls: on ? 'ix-ray ' + par(f.gen) : 'ix-off' }; })
+      };
+    });
+
+    var fog = st.fog.map(function (cleared, i) {
+      var c = i % COLS, r = Math.floor(i / COLS);
+      return { style: 'position: absolute; left: ' + (c * 100 / COLS) + '%; top: ' + (r * 100 / ROWS) + '%; width: ' + (100 / COLS) + '%; height: ' + (100 / ROWS) + '%; background: radial-gradient(closest-side, rgba(228,234,239,0.96) 50%, rgba(228,234,239,0)); transform: scale(1.9); transition: opacity .7s ease; opacity: ' + (cleared ? 0 : 1) };
+    });
+    var clearedCount = st.fog.filter(function (v) { return v; }).length;
+
+    var hint = '';
+    if (st.season < 4) {
+      var h = HINTS[st.season];
+      hint = st.played[st.season] ? h.done : (coarse ? h.coarse : h.fine);
+      if (st.season === 3 && clearedCount > COLS * ROWS * 0.45) { hint = '看見富士山了！準備好就前往下一步吧'; }
+    }
+
+    var nextLabel = st.season < 3 ? '下一季' : (st.season === 3 ? '下一步' : '進入網站');
+
+    return {
+      accent: accent,
+      s: s,
+      rootCls: st.leaving ? 'ix-root ix-leave' : 'ix-root',
+      cursor: st.season === 1 ? 'pointer' : 'crosshair',
+      isSpring: st.season === 0,
+      isSummer: st.season === 1,
+      isAutumn: st.season === 2,
+      isWinter: st.season === 3,
+      isFinal: st.season === 4,
+      showSeasonText: st.season < 4,
+      textCls: 'ix-scene ix-t' + (st.season % 2),
+      fog: fog,
+      blooms: blooms,
+      leaves: leaves,
+      sparks: sparks,
+      fireworks: fireworks,
+      ambFw: !st.played[1],
+      showHint: st.season < 4,
+      hintCls: 'ix-hint ix-h' + ((st.season + (st.played[st.season] ? 1 : 0)) % 2),
+      hint: hint,
+      coarse: coarse,
+      fine: !coarse,
+      tabs: tabs,
+      nextLabel: nextLabel,
+      progress: Math.round((st.season / 4) * 100) + '%',
+      next: function () { self.next(); },
+      skip: function () { self.leave(); },
+      onDown: function (e) {
+        if (self.isControl(e)) { return; }
+        var p = self.pos(e);
+        var sea = self.state.season;
+        self.downAt = Date.now();
+        if (sea === 0) { self.spawnBloom(p.x, p.y, 4); }
+        else if (sea === 1) { self.spawnFirework(p.x, p.y); }
+        else if (sea === 2) { self.spawnLeaves(p.x, p.y, 7); }
+        else if (sea === 3) { self.wipe(p.x, p.y, p.w, p.h); }
+        else { return; }
+        self.last = { x: p.x, y: p.y, t: Date.now() };
+        self.markPlayed();
+      },
+      onMove: function (e) {
+        if (self.isControl(e)) { return; }
+        var sea = self.state.season;
+        if (sea > 3) { return; }
+        var now = Date.now();
+        if (sea === 1 && ((e.pointerType === 'mouse' && e.buttons) || now - self.downAt < 350)) { return; }
+        var p = self.pos(e);
+        var dx = p.x - self.last.x, dy = p.y - self.last.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var gap = sea === 3 ? 30 : 45;
+        var need = sea === 3 ? 18 : 28;
+        if (now - self.last.t < gap || dist < need) { return; }
+        self.last = { x: p.x, y: p.y, t: now };
+        if (sea === 0) { self.spawnBloom(p.x, p.y, 1); }
+        else if (sea === 1) { self.spawnSpark(p.x, p.y); return; }
+        else if (sea === 2) { self.spawnLeaves(p.x, p.y, 2); }
+        else { self.wipe(p.x, p.y, p.w, p.h); }
+        self.markPlayed();
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
