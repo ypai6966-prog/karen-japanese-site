@@ -21,6 +21,13 @@
 - FAQ 答案、年份、回覆工作天數（`[X]`）
 - 粉專連結
 
+## 打字遊戲《記事簿妖怪退治》
+- 網址 `/game/`，導覽列有「打字遊戲」按鈕
+- 5 關＋3 隻 BOSS（大赤鬼、九尾狐、雷神），6 種妖怪；輸入羅馬拼音，支援多種拼法
+- 單字庫在 `site/game/index.html` 的 `W1`～`W5` 陣列
+- 排行榜：`functions/api/scores.js`，資料存在 Cloudflare D1。**尚未建立資料庫**，建立前遊戲會顯示「排行榜準備中」
+  - 建立方式：Cloudflare 建立 D1 資料庫 → Pages 專案 Settings → Bindings 加 D1，變數名稱 `DB` → 重新部署；資料表會自動建立
+
 ## 已知限制
 - 諮詢表單目前只會跳出感謝畫面，**不會真的寄出**。之後可改接 Formspree、Google Apps Script 或 Cloudflare Pages Functions 來真正收件。
 - 手機版導覽列會換成兩行，之後改成「≡」漢堡選單。
