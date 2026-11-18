@@ -14,6 +14,9 @@ a{color:#B4472F}a:hover{color:#8E3522}
 .ruled{background-color:#FFFDF8;background-image:repeating-linear-gradient(#FFFDF8 0,#FFFDF8 35px,#E6DCC8 35px,#E6DCC8 36px)}
 .grid-paper{overflow-x:clip}
 @media (max-width: 520px){.ix-hint{bottom:140px!important}}
+@media (max-width: 520px){.ix-season{top:max(9vh,84px)!important}}
+@media (max-width: 520px){.ix-hint{width:max-content}}
+.ix-wtext span{text-shadow:0 1px 2px rgba(20,30,42,.9),0 0 6px rgba(20,30,42,.7),0 0 16px rgba(20,30,42,.5)}
 .photo-ph{background-color:#EFE7D8;background-image:repeating-linear-gradient(45deg,#E4DAC6 0,#E4DAC6 2px,transparent 2px,transparent 12px)}
 input,select,textarea,button{font:inherit;color:inherit}
 input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #B4472F;outline-offset:2px}
@@ -624,7 +627,7 @@ details[open] .faq-a{animation:fadeUp .35s ease both}
 
 <!-- 季節標題 -->
 <sc-if value="{{showSeasonText}}" hint-placeholder-val="{{ true }}">
-<div aria-live="polite" class="{{textCls}}" style="position: absolute; left: 0; right: 0; top: 9vh; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 0 24px; pointer-events: none">
+<div aria-live="polite" class="ix-season {{textCls}}" style="position: absolute; left: 0; right: 0; top: 9vh; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 0 24px; pointer-events: none">
 <span lang="ja" style="font-family: 'LXGW WenKai TC', serif; font-weight: 700; line-height: 1; font-size: clamp(96px, 15vw, 180px); color: {{s.kc}}">{{s.k}}</span>
 <span lang="ja" style="font-family: 'LXGW WenKai TC', serif; font-size: 24px; letter-spacing: 0.3em; color: {{s.tc}}">{{s.kana}}</span>
 <span style="font-size: 16px; color: {{s.tc}}">{{s.zh}}</span>
@@ -1154,7 +1157,7 @@ class Component extends DCLogic {
       isWinter: st.season === 3,
       isFinal: st.season === 4,
       showSeasonText: st.season < 4,
-      textCls: 'ix-scene ix-t' + (st.season % 2),
+      textCls: 'ix-scene ix-t' + (st.season % 2) + (st.season === 3 ? ' ix-wtext' : ''),
       fog: fog,
       blooms: blooms,
       leaves: leaves,
