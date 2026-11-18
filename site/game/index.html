@@ -15,6 +15,9 @@ body{display:flex;align-items:center;justify-content:center;overflow:hidden;font
 canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 #kb{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0;margin:0;font-size:16px;caret-color:transparent}
 @media (pointer: coarse){body{align-items:flex-start}}
+#rotate{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#fbe9d7;color:#4a3352;font-size:24px;text-align:center;padding:24px}
+#rotate[hidden]{display:none}
+#rotate small{font-size:16px;color:#8a7a98}
 #nameBox{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(74,51,82,.45)}
 #nameBox[hidden]{display:none}
 .nb{width:min(86%,460px);background:#fffaf0;border:4px solid #4a3352;border-radius:16px;box-shadow:6px 8px 0 rgba(74,51,82,.3);padding:20px 22px;text-align:center;color:#3b2a4a;-webkit-user-select:text;user-select:text}
@@ -29,6 +32,7 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rend
 </style>
 </head>
 <body>
+<div id="rotate" hidden><div style="font-size:56px;line-height:1">⟲</div><div>請把手機轉成直向遊玩</div><small>手機橫向時，鍵盤會擋住大部分畫面</small></div>
 <div id="wrap">
 <canvas id="c" width="960" height="540" aria-label="日文打字遊戲畫面"></canvas>
 <input id="kb" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="latin" aria-label="打字輸入">
@@ -413,7 +417,8 @@ function toggleSound() {
 }
 
 /* ---------- 畫布 ---------- */
-const W = 960, H = 540, LW = 320, LH = 180, SC = 3, HORIZON = 72;
+let W = 960, H = 540, LW = 320, LH = 180, HORIZON = 72, CXL = 160, CX = 480, OY = 0, LANE = 1, PATHW = 70, PORTRAIT = false;
+const SC = 3;
 const cv = document.getElementById('c');
 const ctx = cv.getContext('2d');
 const lo = document.createElement('canvas'); lo.width = LW; lo.height = LH;
@@ -478,9 +483,9 @@ function spawnEnemy() {
 function enemyScale(e) { return e.t < 0.34 ? 1 : e.t < 0.68 ? 2 : 3; }
 function enemyPos(e) {
   const t = Math.max(0, e.t - e.kick);
-  return { x: 160 + e.lane * (14 + 96 * t), y: HORIZON + 4 + 98 * t };
+  return { x: CXL + e.lane * (14 + 96 * t) * LANE, y: HORIZON + 4 + (LH - HORIZON - 10) * t };
 }
-const BOSS_X = 160, BOSS_Y = 152;
+let BOSS_X = 160, BOSS_Y = 152;
 
 /* ---------- 輸入 ---------- */
 const kb = document.getElementById('kb');
@@ -504,7 +509,7 @@ kb.addEventListener('blur', () => { if (isTouch && state === 'play') paused = tr
 function fit() {
   const vv = window.visualViewport;
   const vw = vv ? vv.width : innerWidth, vh = vv ? vv.height : innerHeight;
-  wrap.style.width = Math.floor(Math.min(vw, vh * 16 / 9)) + 'px';
+  wrap.style.width = Math.floor(Math.min(vw, vh * W / H)) + 'px';
 }
 if (window.visualViewport) { visualViewport.addEventListener('resize', fit); visualViewport.addEventListener('scroll', () => window.scrollTo(0, 0)); }
 addEventListener('resize', fit); fit();
@@ -577,7 +582,7 @@ function handleChar(raw) {
 function onHit(obj, x, y) {
   G.correct++; G.combo++; G.maxCombo = Math.max(G.maxCombo, G.combo);
   obj.flash = 0.07;
-  shots.push({ x0: 160, y0: 166, x1: x, y1: y, t: 0 });
+  shots.push({ x0: CXL, y0: LH - 14, x1: x, y1: y, t: 0 });
   ofudaKick = 0.12; sfx.key();
 }
 function onMiss(obj) {
@@ -621,7 +626,7 @@ function bossDamage() {
     b.state = 'dying'; b.dieT = 0;
     const bonus = 1000 * (G.bosses + 1);
     G.score += bonus; G.bosses++; G.kills++;
-    floats.push({ x: 480, y: 250, text: 'BOSS BONUS +' + bonus, c: '#ffd23f', t: -0.4, big: true });
+    floats.push({ x: CX, y: 250 + OY, text: 'BOSS BONUS +' + bonus, c: '#ffd23f', t: -0.4, big: true });
   } else {
     nextBossWord();
   }
@@ -633,7 +638,7 @@ function hurtPlayer(x, y) {
     const a = Math.random() * Math.PI * 2, v = 20 + Math.random() * 40;
     particles.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, g: -10, life: 0.5, max: 0.5, c: '#e9e3ef', s: 3 });
   }
-  floats.push({ x: 480, y: 300, text: 'いたい！', c: '#e8505b', t: 0, big: true });
+  floats.push({ x: CX, y: 300 + OY, text: 'いたい！', c: '#e8505b', t: 0, big: true });
 }
 
 /* ---------- 更新 ---------- */
@@ -770,13 +775,13 @@ function drawWorld() {
   const sky = LEVEL_SKY[tone];
   const bh = HORIZON / sky.length;
   sky.forEach((c, i) => { lx.fillStyle = c; lx.fillRect(0, Math.floor(i * bh), LW, Math.ceil(bh) + 1); });
-  if (tone === 2) { lx.fillStyle = '#fff6c9'; circle(268, 22, 8); lx.fillStyle = sky[0]; circle(272, 19, 7); lx.fillStyle = '#ffffff'; for (let i = 0; i < 14; i++) lx.fillRect((i * 53 + 17) % LW, (i * 29 + 5) % 50, 1, 1); }
-  else { lx.fillStyle = tone ? '#ffb070' : '#fff3b0'; circle(268, 22, 9); lx.fillStyle = tone ? '#ff9450' : '#ffe680'; circle(268, 22, 7); }
+  if (tone === 2) { lx.fillStyle = '#fff6c9'; circle(LW - 52, 22, 8); lx.fillStyle = sky[0]; circle(LW - 48, 19, 7); lx.fillStyle = '#ffffff'; for (let i = 0; i < 14; i++) lx.fillRect((i * 53 + 17) % LW, (i * 29 + 5) % 50, 1, 1); }
+  else { lx.fillStyle = tone ? '#ffb070' : '#fff3b0'; circle(LW - 52, 22, 9); lx.fillStyle = tone ? '#ff9450' : '#ffe680'; circle(LW - 52, 22, 7); }
   for (const c of clouds) lx.drawImage(IMG.cloud.cv, Math.round(c.x), c.y);
   lx.fillStyle = tone === 2 ? '#7c74b8' : '#a7b3e6';
-  for (let x = 0; x < LW; x++) { const d = Math.abs(x - 160); const h = Math.max(0, 34 - d * 0.38) + Math.max(0, 10 - Math.abs(x - 52) * 0.25) + Math.max(0, 12 - Math.abs(x - 270) * 0.22); if (h > 0) lx.fillRect(x, HORIZON - Math.round(h), 1, Math.round(h)); }
+  for (let x = 0; x < LW; x++) { const d = Math.abs(x - CXL); const h = Math.max(0, 34 - d * 0.38) + Math.max(0, 10 - Math.abs(x - CXL + 108) * 0.25) + Math.max(0, 12 - Math.abs(x - CXL - 110) * 0.22); if (h > 0) lx.fillRect(x, HORIZON - Math.round(h), 1, Math.round(h)); }
   lx.fillStyle = '#ffffff';
-  for (let x = 146; x <= 174; x++) { const d = Math.abs(x - 160); const h = 34 - d * 0.38; const cap = 9 - d * 0.18 + ((x % 4) < 2 ? 1 : 0); if (cap > 0) lx.fillRect(x, HORIZON - Math.round(h), 1, Math.round(cap)); }
+  for (let x = CXL - 14; x <= CXL + 14; x++) { const d = Math.abs(x - CXL); const h = 34 - d * 0.38; const cap = 9 - d * 0.18 + ((x % 4) < 2 ? 1 : 0); if (cap > 0) lx.fillRect(x, HORIZON - Math.round(h), 1, Math.round(cap)); }
   lx.fillStyle = tone === 2 ? '#8fc48a' : '#a6e39a'; lx.fillRect(0, HORIZON, LW, LH - HORIZON);
   lx.fillStyle = tone === 2 ? '#7fb47c' : '#93d488';
   const flow = state === 'play' && !paused && !G.boss ? (time * 0.35) % 1 : (time * 0.08) % 1;
@@ -787,14 +792,14 @@ function drawWorld() {
     if (k % 2 === 0) lx.fillRect(0, y1, LW, Math.max(1, y2 - y1));
   }
   for (let y = HORIZON; y < LH; y++) {
-    const t = (y - HORIZON) / (LH - HORIZON), half = 6 + t * 70;
-    lx.fillStyle = '#efdcb4'; lx.fillRect(Math.round(160 - half), y, Math.round(half * 2), 1);
-    lx.fillStyle = '#d8bf8e'; lx.fillRect(Math.round(160 - half), y, 2, 1); lx.fillRect(Math.round(160 + half - 2), y, 2, 1);
+    const t = (y - HORIZON) / (LH - HORIZON), half = 6 + t * PATHW;
+    lx.fillStyle = '#efdcb4'; lx.fillRect(Math.round(CXL - half), y, Math.round(half * 2), 1);
+    lx.fillStyle = '#d8bf8e'; lx.fillRect(Math.round(CXL - half), y, 2, 1); lx.fillRect(Math.round(CXL + half - 2), y, 2, 1);
   }
   lx.fillStyle = '#e8505b';
-  lx.fillRect(150, HORIZON - 14, 20, 2); lx.fillRect(152, HORIZON - 11, 16, 1);
-  lx.fillRect(153, HORIZON - 12, 2, 12); lx.fillRect(165, HORIZON - 12, 2, 12);
-  lx.fillStyle = '#4a3352'; lx.fillRect(149, HORIZON - 15, 22, 1);
+  lx.fillRect(CXL - 10, HORIZON - 14, 20, 2); lx.fillRect(CXL - 8, HORIZON - 11, 16, 1);
+  lx.fillRect(CXL - 7, HORIZON - 12, 2, 12); lx.fillRect(CXL + 5, HORIZON - 12, 2, 12);
+  lx.fillStyle = '#4a3352'; lx.fillRect(CXL - 11, HORIZON - 15, 22, 1);
   lx.fillStyle = '#ffc2d4';
   for (const p of petals) lx.fillRect(Math.round(p.x), Math.round(p.y), 2, 1);
 }
@@ -863,7 +868,7 @@ function drawHudPixels() {
     lx.drawImage(im.cv, 6 + i * 17, 6 + dy, im.w * 2, im.h * 2);
   }
   const k = ofudaKick > 0 ? 4 : 0, bob = Math.round(Math.sin(time * 2.5));
-  lx.drawImage(IMG.ofuda.cv, 154, 154 + k + bob, 12, 18);
+  lx.drawImage(IMG.ofuda.cv, CXL - 6, LH - 26 + k + bob, 12, 18);
 }
 
 /* ---------- 繪圖：文字介面 ---------- */
@@ -896,7 +901,7 @@ function wordBubble(obj, cx, by, isT, hint, warnRatio, big, charge) {
   const bh = kanaSize + 64;
   let bx = cx - bw / 2, byy = by - bh;
   bx = Math.max(6, Math.min(W - bw - 6, bx));
-  byy = Math.max(big ? 112 : 70, byy);
+  byy = Math.max((big ? 112 : 70) + (PORTRAIT ? 56 : 0), byy);
   const shakeX = obj.miss > 0 ? Math.sin(time * 90) * 4 : 0;
   bx += shakeX;
   rrect(bx, byy, bw, bh, 10, isT ? '#fffdf5' : 'rgba(255,253,245,0.92)', isT ? '#ff5a7a' : '#4a3352', isT ? 4 : 2.5);
@@ -945,11 +950,11 @@ function drawHudText() {
   if (!G || state === 'title' || state === 'result' || state === 'board') return;
   const L = LEVELS[G.level];
   outlined('SCORE ' + String(G.score).padStart(6, '0'), W - 20, 40, 26, '#ffffff', 'right', '#4a3352', 6);
-  outlined(L.name + '　' + L.sub, 480, 40, 22, '#ffffff', 'center', '#4a3352', 6);
+  outlined(L.name + '　' + L.sub, CX, PORTRAIT ? 80 : 40, 22, '#ffffff', 'center', '#4a3352', 6);
   if (L.type === 'stage') {
     outlined('剩下 ' + (G.queue.length + G.enemies.length) + ' 隻', 20, 92, 18, '#ffffff', 'left', '#4a3352', 5);
   } else if (G.boss) {
-    const b = G.boss, bw = 360, bx = 300, by = 56;
+    const b = G.boss, bw = 360, bx = CX - 180, by = PORTRAIT ? 96 : 56;
     rrect(bx, by, bw, 18, 9, '#ffffff', '#4a3352', 3);
     const r = Math.max(0, b.hp / b.max);
     if (r > 0) rrect(bx + 3, by + 3, (bw - 6) * r, 12, 6, '#ff6b7a');
@@ -957,7 +962,7 @@ function drawHudText() {
   }
   if (G.combo >= 5) {
     const pulse = 1 + Math.max(0, 0.15 - (time % 0.3));
-    outlined(G.combo + ' COMBO!', W - 20, 78, Math.round(22 * pulse), G.combo >= 20 ? '#ffd23f' : '#ff8fb1', 'right', '#4a3352', 6);
+    outlined(G.combo + ' COMBO!', W - 20, PORTRAIT ? 124 : 78, Math.round(22 * pulse), G.combo >= 20 ? '#ffd23f' : '#ff8fb1', 'right', '#4a3352', 6);
   }
 }
 function drawFloats() {
@@ -971,7 +976,7 @@ function drawFloats() {
 function drawOverlay() {
   if (hurtT > 0) {
     const a = Math.min(1, hurtT / 0.5) * 0.55;
-    const g = ctx.createRadialGradient(480, 270, 160, 480, 270, 560);
+    const g = ctx.createRadialGradient(CX, H / 2, 160, CX, H / 2, Math.max(W, H) * 0.62);
     g.addColorStop(0, 'rgba(232,80,91,0)'); g.addColorStop(1, 'rgba(232,80,91,' + a + ')');
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     if (hurtT > 0.42) { ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(0, 0, W, H); }
@@ -998,50 +1003,51 @@ function drawScreens() {
   if (state === 'title') {
     ctx.fillStyle = 'rgba(255,250,240,0.35)'; ctx.fillRect(0, 0, W, H);
     const bob = Math.sin(time * 2) * 6;
-    outlined('記事簿妖怪退治', 480, 128 + bob, 72, '#ff6b7a', 'center', '#4a3352', 12);
-    outlined('〜 日文打字大作戰 〜', 480, 176, 26, '#ffffff', 'center', '#4a3352', 7);
-    panel(220, 206, 520, 196);
-    txt('看到平假名，就用鍵盤打出羅馬拼音！', 480, 250, 22, '#3b2a4a', 'center');
-    txt('例：ねこ → n e k o', 480, 286, 24, '#ff5a7a', 'center');
-    txt('妖怪頭上出現「危」就快打完，不然會被攻擊', 480, 322, 18, '#6b5a7a', 'center');
-    txt('全 5 關＋3 隻 BOSS，打倒 BOSS 可以回復愛心', 480, 352, 18, '#6b5a7a', 'center');
-    txt(isTouch ? '建議用電腦鍵盤遊玩；手機請點畫面叫出鍵盤' : '請先把輸入法切換成「英文」再開始，按 Esc 可以暫停', 480, 382, 16, '#9a8aa8', 'center');
+    outlined('記事簿妖怪退治', CX, 128 + OY + bob, 72, '#ff6b7a', 'center', '#4a3352', 12);
+    outlined('〜 日文打字大作戰 〜', CX, 176 + OY, 26, '#ffffff', 'center', '#4a3352', 7);
+    panel(CX - 260, 206 + OY, 520, 196);
+    txt('看到平假名，就用鍵盤打出羅馬拼音！', CX, 250 + OY, 22, '#3b2a4a', 'center');
+    txt('例：ねこ → n e k o', CX, 286 + OY, 24, '#ff5a7a', 'center');
+    txt('妖怪頭上出現「危」就快打完，不然會被攻擊', CX, 322 + OY, 18, '#6b5a7a', 'center');
+    txt('全 5 關＋3 隻 BOSS，打倒 BOSS 可以回復愛心', CX, 352 + OY, 18, '#6b5a7a', 'center');
+    txt(isTouch ? '建議用電腦鍵盤遊玩；手機請點畫面叫出鍵盤' : '請先把輸入法切換成「英文」再開始，按 Esc 可以暫停', CX, 382 + OY, 16, '#9a8aa8', 'center');
     const blink = Math.floor(time * 2) % 2 === 0;
-    if (blink) outlined(isTouch ? '點畫面開始' : '按 Enter 或點畫面開始', 480, 450, 30, '#ffffff', 'center', '#4a3352', 8);
+    if (blink) outlined(isTouch ? '點畫面開始' : '按 Enter 或點畫面開始', CX, 450 + OY, 30, '#ffffff', 'center', '#4a3352', 8);
     button('排行榜', 20, H - 60, 150, 40, () => openBoard('title'), false, 18);
     soundButton(W - 170, H - 60);
   }
   if (state === 'intro') {
     const L = LEVELS[G.level], k = Math.min(1, stateT / 0.3);
     if (L.type === 'boss') {
-      ctx.fillStyle = 'rgba(232,80,91,' + (0.25 + 0.15 * Math.sin(time * 10)) + ')'; ctx.fillRect(0, 190, W, 150);
-      outlined('BOSS 出現！', 480, 250, Math.round(64 * k), '#ffffff', 'center', '#4a3352', 12);
-      outlined(L.sub, 480, 312, 40, '#ffd23f', 'center', '#4a3352', 9);
+      ctx.fillStyle = 'rgba(232,80,91,' + (0.25 + 0.15 * Math.sin(time * 10)) + ')'; ctx.fillRect(0, 190 + OY, W, 150);
+      outlined('BOSS 出現！', CX, 250 + OY, Math.round(64 * k), '#ffffff', 'center', '#4a3352', 12);
+      outlined(L.sub, CX, 312 + OY, 40, '#ffd23f', 'center', '#4a3352', 9);
     } else {
-      outlined(L.name, 480, 250, Math.round(80 * k), '#ffffff', 'center', '#4a3352', 12);
-      outlined(L.sub, 480, 310, 34, '#ffd23f', 'center', '#4a3352', 8);
-      if (L.hint === 'miss') outlined('這關不顯示拼音，打錯才會出現提示', 480, 354, 20, '#ffffff', 'center', '#4a3352', 6);
+      outlined(L.name, CX, 250 + OY, Math.round(80 * k), '#ffffff', 'center', '#4a3352', 12);
+      outlined(L.sub, CX, 310 + OY, 34, '#ffd23f', 'center', '#4a3352', 8);
+      if (L.hint === 'miss') outlined('這關不顯示拼音，打錯才會出現提示', CX, 354 + OY, 20, '#ffffff', 'center', '#4a3352', 6);
     }
   }
   if (state === 'clear') {
     const L = LEVELS[G.level];
-    outlined(L.type === 'boss' ? 'BOSS 擊退！' : 'STAGE CLEAR!', 480, 270, 72, '#ffd23f', 'center', '#4a3352', 12);
+    outlined(L.type === 'boss' ? 'BOSS 擊退！' : 'STAGE CLEAR!', CX, 270 + OY, 72, '#ffd23f', 'center', '#4a3352', 12);
   }
-  if (state === 'gameover') outlined('GAME OVER', 480, 270, 76, '#ff6b7a', 'center', '#4a3352', 12);
+  if (state === 'gameover') outlined('GAME OVER', CX, 270 + OY, 76, '#ff6b7a', 'center', '#4a3352', 12);
   if (state === 'play' || state === 'intro') soundButton(W - 170, H - 56);
   if (state === 'result') drawResult();
   if (state === 'board') drawBoard();
   if (paused && state === 'play') {
     ctx.fillStyle = 'rgba(74,51,82,0.55)'; ctx.fillRect(0, 0, W, H);
-    outlined('暫停中', 480, 250, 60, '#ffffff', 'center', '#4a3352', 10);
-    outlined(isTouch ? '點畫面繼續（會叫出鍵盤）' : '點畫面或按 Esc 繼續', 480, 310, 26, '#ffffff', 'center', '#4a3352', 7);
+    outlined('暫停中', CX, 250 + OY, 60, '#ffffff', 'center', '#4a3352', 10);
+    outlined(isTouch ? '點畫面繼續（會叫出鍵盤）' : '點畫面或按 Esc 繼續', CX, 310 + OY, 26, '#ffffff', 'center', '#4a3352', 7);
   }
   if (imeWarnT > 0) {
-    rrect(200, 470, 560, 52, 12, '#fff3b0', '#4a3352', 3);
-    txt('偵測到中文／日文輸入法，請切換成「英文」輸入', 480, 504, 20, '#b8344a', 'center');
+    rrect(CX - 280, H - 70, 560, 52, 12, '#fff3b0', '#4a3352', 3);
+    txt('偵測到中文／日文輸入法，請切換成「英文」輸入', CX, H - 36, 20, '#b8344a', 'center');
   }
 }
 function drawResult() {
+  if (PORTRAIT) return drawResultPortrait();
   ctx.fillStyle = 'rgba(74,51,82,0.35)'; ctx.fillRect(0, 0, W, H);
   panel(130, 30, 700, 480);
   outlined(G.cleared ? '全破！恭喜通關！' : '再接再厲！', 480, 84, 38, '#ff6b7a', 'center', '#4a3352', 9);
@@ -1080,6 +1086,7 @@ function drawResult() {
   if (board.status === 'ok' && !G.submitted && qualifies(G.score) && nameBox.hidden) buttons.push({ x: 140, y: 362, w: 230, h: 30, fn: showNameBox });
 }
 function drawBoard() {
+  if (PORTRAIT) return drawBoardPortrait();
   ctx.fillStyle = 'rgba(74,51,82,0.45)'; ctx.fillRect(0, 0, W, H);
   panel(110, 24, 740, 492);
   outlined('排行榜', 480, 76, 40, '#ff6b7a', 'center', '#4a3352', 9);
@@ -1116,6 +1123,82 @@ function drawBoard() {
   });
 }
 
+// ---- 手機直向版的結算與排行榜 ----
+function drawResultPortrait() {
+  ctx.fillStyle = 'rgba(74,51,82,0.35)'; ctx.fillRect(0, 0, W, H);
+  panel(16, 16, W - 32, H - 32);
+  outlined(G.cleared ? '全破！恭喜通關！' : '再接再厲！', CX, 72, 36, '#ff6b7a', 'center', '#4a3352', 9);
+  const k = Math.min(1, stateT / 0.4);
+  const gc = { S: '#ffd23f', A: '#ff6b7a', B: '#6bb8ff', C: '#8fd18a', D: '#b3a6c0' }[G.grade];
+  rrect(52, 100, 150, 150, 18, '#ffffff', '#4a3352', 4);
+  outlined(G.grade, 127, 220, Math.round(124 * (0.6 + 0.4 * k)), gc, 'center', '#4a3352', 11);
+  txt('評等', 410, 138, 18, '#8a7a98', 'center');
+  txt(G.title, 410, 176, 26, '#3b2a4a', 'center');
+  txt('總分', 410, 212, 16, '#8a7a98', 'center');
+  txt(String(G.score), 410, 246, 34, '#ff5a7a', 'center');
+  const reachedName = G.cleared ? '全部通關' : LEVELS[G.level].name + ' ' + LEVELS[G.level].sub;
+  const rows = [
+    ['打字速度', G.kpm + ' 字／分鐘'],
+    ['正確率', G.acc + ' %'],
+    ['最大連擊', G.maxCombo + ' COMBO'],
+    ['擊倒妖怪', G.kills + ' 隻（BOSS ' + G.bosses + '）'],
+    ['到達關卡', reachedName]
+  ];
+  rows.forEach((r, i) => {
+    const y = 302 + i * 44;
+    txt(r[0], 52, y, 22, '#8a7a98');
+    txt(r[1], W - 52, y, 23, '#3b2a4a', 'right');
+    ctx.fillStyle = '#efe4d6'; ctx.fillRect(52, y + 13, W - 104, 2);
+  });
+  txt('打字速度＝每分鐘正確打出的假名數', CX, 532, 15, '#a99bb6', 'center');
+  let note = '';
+  if (board.status === 'loading') note = '排行榜讀取中…';
+  else if (board.status === 'off') note = '排行榜準備中，敬請期待';
+  else if (G.submitted) note = '已登錄排行榜！';
+  else if (board.status === 'ok') note = qualifies(G.score) ? '進入前 10 名！點這裡登錄排行榜' : '這次沒有進入前 10 名，再挑戰一次吧';
+  txt(note, CX, 572, 20, '#ff5a7a', 'center');
+  if (board.status === 'ok' && !G.submitted && qualifies(G.score) && nameBox.hidden) buttons.push({ x: CX - 220, y: 548, w: 440, h: 34, fn: showNameBox });
+  button('再玩一次', 36, 604, 180, 60, newGame, true);
+  button('排行榜', 231, 604, 180, 60, () => openBoard('result'));
+  button('回記事簿', 426, 604, 180, 60, () => { location.href = '../'; });
+}
+function drawBoardPortrait() {
+  ctx.fillStyle = 'rgba(74,51,82,0.45)'; ctx.fillRect(0, 0, W, H);
+  panel(12, 16, W - 24, H - 32);
+  outlined('排行榜', CX, 70, 38, '#ff6b7a', 'center', '#4a3352', 9);
+  const tabs = [['month', '本月'], ['all', '歷代']];
+  tabs.forEach((t, i) => {
+    const x = 36 + i * 128, on = board.period === t[0];
+    rrect(x, 96, 116, 42, 10, on ? '#ff6b7a' : '#ffffff', '#4a3352', 3);
+    txt(t[1], x + 58, 125, 22, on ? '#ffffff' : '#4a3352', 'center');
+    buttons.push({ x: x, y: 96, w: 116, h: 42, fn: () => { board.period = t[0]; } });
+  });
+  button('關閉', W - 156, 94, 120, 44, closeBoard, false, 22);
+  if (board.status === 'loading' || board.status === 'idle') { txt('讀取中…', CX, 340, 26, '#8a7a98', 'center'); return; }
+  if (board.status === 'off') {
+    txt('排行榜準備中，敬請期待！', CX, 320, 28, '#3b2a4a', 'center');
+    txt('開放後，進入前 10 名就可以留下名字', CX, 362, 19, '#8a7a98', 'center');
+    return;
+  }
+  const list = board.data[board.period] || [];
+  const cols = [[66, '名次', 'center'], [110, '名字', 'left'], [430, '分數', 'right'], [530, '速度', 'right'], [600, '評等', 'right']];
+  cols.forEach(c => txt(c[1], c[0], 170, 17, '#8a7a98', c[2]));
+  ctx.fillStyle = '#efe4d6'; ctx.fillRect(36, 180, W - 72, 2);
+  if (!list.length) { txt('還沒有人登錄，成為第一名吧！', CX, 340, 24, '#8a7a98', 'center'); return; }
+  list.forEach((r, i) => {
+    const y = 218 + i * 46;
+    const me = board.highlight && r.id === board.highlight;
+    if (me) rrect(30, y - 30, W - 60, 42, 10, '#ffe3ea');
+    const medal = ['#ffd23f', '#c9c6d6', '#e3a46a'][i];
+    if (medal) { ctx.fillStyle = medal; ctx.beginPath(); ctx.arc(66, y - 8, 15, 0, Math.PI * 2); ctx.fill(); }
+    txt(String(i + 1), 66, y, 20, '#3b2a4a', 'center');
+    txt(String(r.name).slice(0, 8), 110, y, 22, '#3b2a4a');
+    txt(String(r.score), 430, y, 22, me ? '#ff5a7a' : '#3b2a4a', 'right');
+    txt(r.kpm + '字/分', 530, y, 16, '#6b5a7a', 'right');
+    txt(String(r.grade), 600, y, 22, '#3b2a4a', 'right');
+  });
+}
+
 /* ---------- 主迴圈 ---------- */
 let last = performance.now();
 function frame(now) {
@@ -1143,6 +1226,39 @@ function frame(now) {
   drawScreens();
   requestAnimationFrame(frame);
 }
+/* ---------- 畫面版型：電腦／平板用寬螢幕，手機直向用接近正方形的版型 ---------- */
+function setLayout(portrait) {
+  PORTRAIT = portrait;
+  if (portrait) { W = 642; H = 720; LW = 214; LH = 240; HORIZON = 104; LANE = 0.75; PATHW = 60; }
+  else { W = 960; H = 540; LW = 320; LH = 180; HORIZON = 72; LANE = 1; PATHW = 70; }
+  CXL = LW / 2; CX = W / 2; OY = (H - 540) / 2; BOSS_X = CXL; BOSS_Y = LH - 28;
+  cv.width = W; cv.height = H; lo.width = LW; lo.height = LH;
+  ctx.imageSmoothingEnabled = false; lx.imageSmoothingEnabled = false;
+  wrap.style.aspectRatio = W + ' / ' + H;
+  for (const p of petals) { p.x = Math.random() * LW; p.y = Math.random() * LH; }
+  fit();
+}
+// 用螢幕方向判斷（不用視窗大小，避免打開鍵盤時被誤判成橫向）
+function devicePortrait() {
+  if (!isTouch) return false;
+  const o = screen.orientation && screen.orientation.type;
+  if (o) return o.indexOf('portrait') === 0;
+  if (typeof window.orientation === 'number') return window.orientation % 180 === 0;
+  return innerHeight >= innerWidth;
+}
+const rotateEl = document.getElementById('rotate');
+function checkOrientation() {
+  const p = devicePortrait();
+  if (p !== PORTRAIT) setLayout(p);
+  const landscapePhone = isTouch && !p && Math.min(screen.width, screen.height) < 600;
+  rotateEl.hidden = !landscapePhone;
+  if (landscapePhone && state === 'play') paused = true;
+}
+if (screen.orientation && screen.orientation.addEventListener) screen.orientation.addEventListener('change', checkOrientation);
+addEventListener('orientationchange', () => setTimeout(checkOrientation, 200));
+addEventListener('resize', checkOrientation);
+checkOrientation();
+
 (document.fonts && document.fonts.load ? document.fonts.load("20px 'DotGothic16'") : Promise.resolve()).catch(() => {}).then(() => {
   focusKb();
   requestAnimationFrame(frame);
