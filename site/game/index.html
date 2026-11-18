@@ -13,7 +13,8 @@ html,body{margin:0;height:100%;background:#fbe9d7}
 body{display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:'DotGothic16',monospace;-webkit-user-select:none;user-select:none;touch-action:manipulation}
 #wrap{position:relative;width:min(100vw,calc(100vh*16/9));aspect-ratio:16/9;box-shadow:0 0 0 4px #4a3352,0 12px 32px rgba(74,51,82,.25)}
 canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
-#kb{position:absolute;left:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0;margin:0;font-size:16px}
+#kb{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0;margin:0;font-size:16px;caret-color:transparent}
+@media (pointer: coarse){body{align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -303,12 +304,28 @@ function enemyPos(e) {
 /* ---------- 輸入 ---------- */
 const kb = document.getElementById('kb');
 function focusKb() { try { kb.focus({ preventScroll: true }); } catch (e) { kb.focus(); } }
-document.getElementById('wrap').addEventListener('pointerdown', ev => {
-  focusKb();
+const wrap = document.getElementById('wrap');
+// 手機：阻止點擊把焦點從輸入框搶走（否則手指放開鍵盤就收起來）
+wrap.addEventListener('touchstart', ev => { ev.preventDefault(); focusKb(); }, { passive: false });
+wrap.addEventListener('touchend', ev => {
+  ev.preventDefault(); focusKb();
+  const t = ev.changedTouches[0]; if (t) pointAt(t.clientX, t.clientY);
+}, { passive: false });
+wrap.addEventListener('mousedown', ev => { ev.preventDefault(); focusKb(); pointAt(ev.clientX, ev.clientY); });
+function pointAt(cx, cy) {
   const r = cv.getBoundingClientRect();
-  const x = (ev.clientX - r.left) / r.width * W, y = (ev.clientY - r.top) / r.height * H;
-  onClick(x, y);
-});
+  onClick((cx - r.left) / r.width * W, (cy - r.top) / r.height * H);
+}
+// 手機鍵盤被收起來時自動暫停，點畫面就會重新叫出鍵盤
+kb.addEventListener('blur', () => { if (isTouch && state === 'play') paused = true; });
+// 鍵盤打開時，依可視高度縮放遊戲畫面
+function fit() {
+  const vv = window.visualViewport;
+  const vw = vv ? vv.width : innerWidth, vh = vv ? vv.height : innerHeight;
+  wrap.style.width = Math.floor(Math.min(vw, vh * 16 / 9)) + 'px';
+}
+if (window.visualViewport) { visualViewport.addEventListener('resize', fit); visualViewport.addEventListener('scroll', () => window.scrollTo(0, 0)); }
+addEventListener('resize', fit); fit();
 kb.addEventListener('input', ev => {
   if (ev.isComposing || ev.inputType === 'insertCompositionText') { imeWarnT = 3; return; }
   const d = kb.value; kb.value = '';
@@ -324,7 +341,7 @@ window.addEventListener('keydown', ev => {
   if (ev.key === 'Enter') { ev.preventDefault(); onEnter(); }
   if (ev.key === 'Escape' && state === 'play') { paused = !paused; }
 });
-window.addEventListener('blur', () => { if (state === 'play') paused = true; });
+window.addEventListener('blur', () => { if (state === 'play' && !isTouch) paused = true; });
 
 let buttons = [];
 function onClick(x, y) {
@@ -688,7 +705,7 @@ function drawScreens() {
   if (paused && state === 'play') {
     ctx.fillStyle = 'rgba(74,51,82,0.55)'; ctx.fillRect(0, 0, W, H);
     outlined('暫停中', 480, 250, 60, '#ffffff', 'center', '#4a3352', 10);
-    outlined(isTouch ? '點畫面繼續' : '點畫面或按 Esc 繼續', 480, 310, 26, '#ffffff', 'center', '#4a3352', 7);
+    outlined(isTouch ? '點畫面繼續（會叫出鍵盤）' : '點畫面或按 Esc 繼續', 480, 310, 26, '#ffffff', 'center', '#4a3352', 7);
   }
   if (imeWarnT > 0) {
     rrect(200, 470, 560, 52, 12, '#fff3b0', '#4a3352', 3);
