@@ -4,6 +4,8 @@
 
 ## 資料夾
 - `site/index.html`：可直接部署的網站（Cloudflare Pages 會發布這個資料夾）
+- `site/game/index.html`：日文打字遊戲《記事簿妖怪退治》，網址 `/game/`
+- `functions/api/scores.js`：打字遊戲排行榜 API（Cloudflare Pages Functions，需要綁定 D1 資料庫 `DB`）
 - `source/`：設計稿原始檔與打包腳本
 
 ## 本機預覽
