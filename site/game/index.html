@@ -514,15 +514,23 @@ function fit() {
 if (window.visualViewport) { visualViewport.addEventListener('resize', fit); visualViewport.addEventListener('scroll', () => window.scrollTo(0, 0)); }
 addEventListener('resize', fit); fit();
 
+// 手機改用密碼欄位：手機鍵盤遇到密碼欄位會關掉選字預測，每個字母直接送出
+if (isTouch) { try { kb.type = 'password'; } catch (e) {} }
+// 手機的英文鍵盤也會用「組字」方式送出字母，所以只比對新增的字，不把組字當成中文輸入法
+let kbPrev = '', composing = false;
+kb.addEventListener('compositionstart', () => { composing = true; });
+kb.addEventListener('compositionend', () => { composing = false; kb.value = ''; kbPrev = ''; });
 kb.addEventListener('input', ev => {
-  if (ev.isComposing || ev.inputType === 'insertCompositionText') { imeWarnT = 3; return; }
-  const d = kb.value; kb.value = '';
-  for (const ch of d) handleChar(ch);
+  if (!isTouch && (ev.isComposing || ev.inputType === 'insertCompositionText')) { imeWarnT = 3; return; }
+  const v = kb.value;
+  const added = v.startsWith(kbPrev) ? v.slice(kbPrev.length) : '';
+  kbPrev = v;
+  if (!composing && !ev.isComposing) { kb.value = ''; kbPrev = ''; }
+  for (const ch of added) handleChar(ch);
 });
-kb.addEventListener('compositionend', () => { kb.value = ''; imeWarnT = 3; });
 window.addEventListener('keydown', ev => {
   if (!nameBox.hidden) { if (ev.key === 'Escape') skipName(); return; }
-  if (ev.key === 'Process' || ev.isComposing || ev.keyCode === 229) { imeWarnT = 3; return; }
+  if (ev.key === 'Process' || ev.isComposing || ev.keyCode === 229) { if (!isTouch) imeWarnT = 3; return; }
   if (document.activeElement !== kb) {
     focusKb();
     if (ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) { ev.preventDefault(); handleChar(ev.key); return; }
@@ -550,7 +558,7 @@ function handleChar(raw) {
   let ch = raw.toLowerCase();
   const code = ch.charCodeAt(0);
   if (code >= 0xFF01 && code <= 0xFF5E) ch = String.fromCharCode(code - 0xFEE0).toLowerCase();
-  if (/[぀-ヿ]/.test(ch)) { imeWarnT = 3; return; }
+  if (/[\u3040-\u30ff\u3100-\u312f\u31a0-\u31bf\u4e00-\u9fff]/.test(ch)) { imeWarnT = 3; return; }
   if (!/^[a-z\-']$/.test(ch)) return;
   G.total++;
   // BOSS 戰
